@@ -1,6 +1,6 @@
 import express from 'express';
 import atob from 'atob'; // To decode Base64 string
-import { fileTypeFromBuffer } from 'file-type'; // Correct import for determining MIME type
+import mime from 'mime'; // Import mime package
 
 const router = express.Router();
 
@@ -42,22 +42,20 @@ router.post('/bfhl', async (req, res) => {
     const highest_lowercase_alphabet = alphabets.filter(item => /^[a-z]$/.test(item)).sort().pop() || [];
 
     // File handling (Base64 validation)
-    let file_valid;
-    let file_mime_type;
-    let file_size_kb ;
+    let file_valid = false;
+    let file_mime_type = null;
+    let file_size_kb = null;
 
     if (file_b64) {
         // Strip off the metadata if present
-        const base64Data = file_b64.replace(/^data:image\/\w+;base64,/, "");
+        const base64Data = file_b64.replace(/^data:(.*?);base64,/, "");
+        const fileExtension = file_b64.match(/data:(.*?);base64,/)[1].split('/')[1]; // Extract file extension
+
         try {
             const buffer = base64ToBuffer(base64Data);
-            const fileTypeResult = await fileTypeFromBuffer.fromBuffer(buffer);
-
-            if (fileTypeResult) {
-                file_valid = true;
-                file_mime_type = fileTypeResult.mime;
-                file_size_kb = (buffer.byteLength / 1024).toFixed(2); // Convert size to KB
-            }
+            file_mime_type = mime.getType(fileExtension); // Get MIME type from extension
+            file_size_kb = (buffer.byteLength / 1024).toFixed(2); // Convert size to KB
+            file_valid = true; // Set valid to true since we are able to process the file
         } catch (error) {
             console.log("Error processing file:", error);
         }
@@ -76,6 +74,5 @@ router.post('/bfhl', async (req, res) => {
         file_size_kb
     });
 });
-
 
 export default router;
