@@ -1,6 +1,6 @@
 import express from 'express';
 import atob from 'atob'; // To decode Base64 string
-import { fileTypeFromBuffer } from 'file-type'; // Correct import for determining MIME type
+import fileType from 'file-type'; // Correct import for determining MIME type
 
 const router = express.Router();
 
@@ -51,7 +51,7 @@ router.post('/bfhl', async (req, res) => {
         const base64Data = file_b64.replace(/^data:image\/\w+;base64,/, "");
         try {
             const buffer = base64ToBuffer(base64Data);
-            const fileTypeResult = await fileTypeFromBuffer.fromBuffer(buffer);
+            const fileTypeResult = await fileType.fromBuffer(buffer);
 
             if (fileTypeResult) {
                 file_valid = true;
