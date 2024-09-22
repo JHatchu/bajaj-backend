@@ -42,9 +42,9 @@ router.post('/bfhl', async (req, res) => {
     const highest_lowercase_alphabet = alphabets.filter(item => /^[a-z]$/.test(item)).sort().pop() || [];
 
     // File handling (Base64 validation)
-    let file_valid = false;
-    let file_mime_type = null;
-    let file_size_kb = null;
+    let file_valid ;
+    let file_mime_type;
+    let file_size_kb ;
 
     if (file_b64) {
         // Strip off the metadata if present
