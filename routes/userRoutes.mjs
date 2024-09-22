@@ -51,7 +51,7 @@ router.post('/bfhl', async (req, res) => {
         const base64Data = file_b64.replace(/^data:image\/\w+;base64,/, "");
         try {
             const buffer = base64ToBuffer(base64Data);
-            const fileTypeResult = await fileType.fromBuffer(buffer);
+            const fileTypeResult = await fileTypeFromBuffer.fromBuffer(buffer);
 
             if (fileTypeResult) {
                 file_valid = true;
