@@ -47,9 +47,11 @@ router.post('/bfhl', async (req, res) => {
     let file_size_kb = null;
 
     if (file_b64) {
+        // Strip off the metadata if present
+        const base64Data = file_b64.replace(/^data:image\/\w+;base64,/, "");
         try {
-            const buffer = base64ToBuffer(file_b64);
-            const fileTypeResult = await fileTypeFromBuffer(buffer); // Use the correct function
+            const buffer = base64ToBuffer(base64Data);
+            const fileTypeResult = await fileType.fromBuffer(buffer);
 
             if (fileTypeResult) {
                 file_valid = true;
@@ -57,7 +59,7 @@ router.post('/bfhl', async (req, res) => {
                 file_size_kb = (buffer.byteLength / 1024).toFixed(2); // Convert size to KB
             }
         } catch (error) {
-            console.log("Invalid file base64", error);
+            console.log("Error processing file:", error);
         }
     }
 
@@ -74,5 +76,6 @@ router.post('/bfhl', async (req, res) => {
         file_size_kb
     });
 });
+
 
 export default router;
