@@ -1,5 +1,5 @@
-const express = require('express');
-const cors = require('cors');
+import express from 'express';
+import cors from 'cors';
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(cors());
 
 // Importing routes
-const userRoutes = require('./routes/userRoutes');
+import userRoutes from './routes/userRoutes.mjs'; // Ensure your route file is named correctly
 
 app.use(userRoutes);
 

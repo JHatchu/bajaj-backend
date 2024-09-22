@@ -1,7 +1,9 @@
-const express = require('express');
-const router = new express.Router();
-const atob = require('atob'); // To decode Base64 string
-const fileType = require('file-type'); // For determining MIME type from buffer
+import express from 'express';
+import { Router } from 'express';
+import atob from 'atob'; // To decode Base64 string
+import fileType from 'file-type'; // For determining MIME type from buffer
+
+const router = new Router();
 
 // Utility function to convert Base64 string to buffer
 function base64ToBuffer(base64String) {
@@ -74,4 +76,4 @@ router.post('/bfhl', async (req, res) => {
     });
 });
 
-module.exports = router;
+export default router;
