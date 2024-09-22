@@ -1,6 +1,6 @@
 const express = require('express');
 const router = new express.Router();
-const fileType = require('file-type'); // For determining MIME type from buffer
+import fileType from 'file-type'; // For determining MIME type from buffer
 const atob = require('atob'); // To decode Base64 string
 
 // Utility function to convert Base64 string to buffer
