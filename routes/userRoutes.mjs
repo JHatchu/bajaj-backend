@@ -1,6 +1,6 @@
 import express from 'express';
 import atob from 'atob'; // To decode Base64 string
-import fileType from 'file-type'; // Correct import for determining MIME type
+import { fileTypeFromBuffer } from 'file-type'; // Correct import for determining MIME type
 
 const router = express.Router();
 
@@ -42,16 +42,16 @@ router.post('/bfhl', async (req, res) => {
     const highest_lowercase_alphabet = alphabets.filter(item => /^[a-z]$/.test(item)).sort().pop() || [];
 
     // File handling (Base64 validation)
-    let file_valid = false;
-    let file_mime_type = null;
-    let file_size_kb = null;
+    let file_valid;
+    let file_mime_type;
+    let file_size_kb ;
 
     if (file_b64) {
         // Strip off the metadata if present
         const base64Data = file_b64.replace(/^data:image\/\w+;base64,/, "");
         try {
             const buffer = base64ToBuffer(base64Data);
-            const fileTypeResult = await fileType.fromBuffer(buffer);
+            const fileTypeResult = await fileTypeFromBuffer.fromBuffer(buffer);
 
             if (fileTypeResult) {
                 file_valid = true;
